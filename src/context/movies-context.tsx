@@ -89,6 +89,9 @@ export const MoviesProvider: React.FC<IMoviesProviderProps> = ({
     if (!moviesData) return;
     // Get from local storage
     let persistedMovies = localStorage.getItem("movies");
+    const persistedStarredMovies = localStorage.getItem("starred");
+    const persistedWatchlistMovies = localStorage.getItem("watchlist");
+
     if (persistedMovies) {
       setMovies(JSON.parse(persistedMovies));
       setFilteredMovies(JSON.parse(persistedMovies));
@@ -100,7 +103,6 @@ export const MoviesProvider: React.FC<IMoviesProviderProps> = ({
         ),
       ];
       setGenres(allGenres as string[]);
-      return;
     } else {
       setMovies(moviesData);
       setFilteredMovies(moviesData);
@@ -112,6 +114,13 @@ export const MoviesProvider: React.FC<IMoviesProviderProps> = ({
       ];
       setGenres(allGenres as string[]);
       localStorage.setItem("movies", JSON.stringify(moviesData));
+    }
+
+    if (persistedStarredMovies) {
+      setStarred(JSON.parse(persistedStarredMovies));
+    }
+    if (persistedWatchlistMovies) {
+      setWatchlist(JSON.parse(persistedWatchlistMovies));
     }
   }, [moviesData]);
 
@@ -128,25 +137,33 @@ export const MoviesProvider: React.FC<IMoviesProviderProps> = ({
   };
 
   const handleWatchList = (id: number, action: "add" | "remove") => {
+    let temp = [...watchlist];
     if (action === "add") {
       const movie = movies.find((movie) => movie.id === id);
       if (!movie) return;
       setWatchlist([...watchlist, movie]);
+      temp = [...watchlist, movie];
     } else if (action === "remove") {
       const updatedWatchlist = watchlist.filter((movie) => movie.id !== id);
       setWatchlist(updatedWatchlist);
+      temp = updatedWatchlist;
     }
+    localStorage.setItem("watchlist", JSON.stringify(temp));
   };
 
   const handleStarred = (id: number, action: "add" | "remove") => {
+    let temp = [...starred];
     if (action === "add") {
       const movie = movies.find((movie) => movie.id === id);
       if (!movie) return;
       setStarred([...starred, movie]);
+      temp = [...starred, movie];
     } else {
       const updatedStarred = starred.filter((movie) => movie.id !== id);
       setStarred(updatedStarred);
+      temp = updatedStarred;
     }
+    localStorage.setItem("starred", JSON.stringify(temp));
   };
 
   const updateAppliedFilters = (
