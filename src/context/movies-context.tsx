@@ -91,16 +91,26 @@ export const MoviesProvider: React.FC<IMoviesProviderProps> = ({
     let persistedMovies = localStorage.getItem("movies");
     if (persistedMovies) {
       setMovies(JSON.parse(persistedMovies));
-      setFilteredMovies(movies);
-      const allGenres = [...new Set(movies.flatMap(({ genre }) => genre))];
-      setGenres(allGenres);
+      setFilteredMovies(JSON.parse(persistedMovies));
+      const allGenres = [
+        ...new Set(
+          JSON.parse(persistedMovies).flatMap(
+            ({ genre }: { genre: string[] }) => genre
+          )
+        ),
+      ];
+      setGenres(allGenres as string[]);
       return;
     } else {
       setMovies(moviesData);
-      setFilteredMovies(movies);
+      setFilteredMovies(moviesData);
       // get all the genres-
-      const allGenres = [...new Set(movies.flatMap(({ genre }) => genre))];
-      setGenres(allGenres);
+      const allGenres = [
+        ...new Set(
+          moviesData.flatMap(({ genre }: { genre: string[] }) => genre)
+        ),
+      ];
+      setGenres(allGenres as string[]);
       localStorage.setItem("movies", JSON.stringify(moviesData));
     }
   }, [moviesData]);

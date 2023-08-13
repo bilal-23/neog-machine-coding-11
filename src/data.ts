@@ -1,3 +1,16 @@
+interface Movie {
+    id: number;
+    title: string;
+    year: number;
+    genre: string[];
+    rating: number;
+    director: string;
+    writer: string;
+    cast: string[];
+    summary: string;
+    imageURL: string;
+}
+
 export const moviesData: any = [
     {
         id: 1,
@@ -151,4 +164,4 @@ export const moviesData: any = [
         imageURL:
             'https://images.moviesanywhere.com/198e228b071c60f5ad57e5f62fe60029/ff22cad6-2218-414d-b853-3f95d76905c7.jpg',
     },
-]
+] as Movie[];
