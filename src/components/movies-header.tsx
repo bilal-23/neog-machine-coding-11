@@ -18,12 +18,12 @@ const releaseYears = [
 
 const MoviesHeader = () => {
   const { genres, updateAppliedFilters, appliedFilters } = useMoviesContext();
-  console.log(appliedFilters);
+
   return (
     <div className="flex justify-between">
       <h1 className="text-2xl font-bold">Movies</h1>
       <Select
-        onValueChange={(e) => updateAppliedFilters("genre", e)}
+        onValueChange={(e) => updateAppliedFilters("genres", e)}
         value={appliedFilters.genres}
       >
         <SelectTrigger className="w-[180px]">

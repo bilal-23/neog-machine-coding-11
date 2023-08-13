@@ -22,7 +22,6 @@ const Movie = () => {
     useMoviesContext();
   const { id } = useParams();
   const navigate = useNavigate();
-  console.log(movie);
   useEffect(() => {
     if (movies) {
       const movie = movies.find((movie) => movie.id === Number(id));

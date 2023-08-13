@@ -32,7 +32,7 @@ interface MoviesContextValue {
   };
 
   updateAppliedFilters: (
-    filterType: "genre" | "releaseYear" | "rating",
+    filterType: "genres" | "releaseYear" | "rating",
     value: string
   ) => void;
 
@@ -91,6 +91,7 @@ export const MoviesProvider: React.FC<IMoviesProviderProps> = ({
     let persistedMovies = localStorage.getItem("movies");
     const persistedStarredMovies = localStorage.getItem("starred");
     const persistedWatchlistMovies = localStorage.getItem("watchlist");
+    const persistedFilters = localStorage.getItem("appliedFilters");
 
     if (persistedMovies) {
       setMovies(JSON.parse(persistedMovies));
@@ -121,6 +122,9 @@ export const MoviesProvider: React.FC<IMoviesProviderProps> = ({
     }
     if (persistedWatchlistMovies) {
       setWatchlist(JSON.parse(persistedWatchlistMovies));
+    }
+    if (persistedFilters) {
+      setAppliedFilters(JSON.parse(persistedFilters));
     }
   }, [moviesData]);
 
@@ -167,11 +171,10 @@ export const MoviesProvider: React.FC<IMoviesProviderProps> = ({
   };
 
   const updateAppliedFilters = (
-    filterType: "genre" | "releaseYear" | "rating",
+    filterType: "genres" | "releaseYear" | "rating",
     value: string
   ) => {
-    console.log(filterType, value);
-    if (filterType === "genre") {
+    if (filterType === "genres") {
       setAppliedFilters({
         ...appliedFilters,
         genres: value,
@@ -182,6 +185,10 @@ export const MoviesProvider: React.FC<IMoviesProviderProps> = ({
         [filterType]: value,
       });
     }
+    localStorage.setItem(
+      "appliedFilters",
+      JSON.stringify({ ...appliedFilters, [filterType]: value })
+    );
   };
 
   const filterMovies = () => {
@@ -216,7 +223,6 @@ export const MoviesProvider: React.FC<IMoviesProviderProps> = ({
         ({ rating }) => rating === +appliedFilters.rating
       );
       temp = filteredByRating;
-      console.log(temp);
     }
     setFilteredMovies(temp);
   };
