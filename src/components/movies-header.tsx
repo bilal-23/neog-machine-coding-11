@@ -87,7 +87,7 @@ const MoviesHeader = () => {
             })}
         </SelectContent>
       </Select>
-      <Link to="/add-product">
+      <Link to="/add-movie">
         <Button variant="outline">New</Button>
       </Link>
     </div>
